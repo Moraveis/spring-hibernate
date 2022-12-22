@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
@@ -16,8 +17,7 @@ public class Main {
                 .buildSessionFactory();
 
         try (factory) {
-            Session session = factory.getCurrentSession();
-
+            
             Student student1 = new Student("John", "Doe", "john@test.com");
             Student student2 = new Student("Mary", "Public", "mary@test.com");
             Student student3 = new Student("Bonita", "Applebum", "bonita@test.com");
@@ -26,26 +26,14 @@ public class Main {
             /*
              * Saving Objects
              */
-            session.beginTransaction();
-
-            session.save(student1);
-            session.save(student2);
-            session.save(student3);
-            session.save(student4);
-            System.out.println("Id: " + student4.getId());
-
-            session.getTransaction().commit();
+            Session session = factory.getCurrentSession();
+            savingEntityExample(session, Arrays.asList(student1, student2, student3, student4));
 
             /*
              * Reading Objects
              */
-
             session = factory.getCurrentSession();
-            session.beginTransaction();
-            Student result = session.get(Student.class, 1);
-            session.getTransaction().commit();
-
-            System.out.println(result.toString());
+            retrieveEntityById(session, 2);
 
             /*
              * Querying objects
@@ -53,25 +41,17 @@ public class Main {
             session = factory.getCurrentSession();
             session.beginTransaction();
 
-            List<Student> studentList = session.createQuery("from Student").getResultList();
-            studentList.forEach(student -> {
-                System.out.println(student.toString());
-            });
+            List<Student> studentList = queryDatabase(session, "from Student");
+            printQueryResult(studentList);
 
-            studentList = session.createQuery("from Student s where s.lastName = 'Doe'").getResultList();
-            studentList.forEach(student -> {
-                System.out.println(student.toString());
-            });
+            studentList = queryDatabase(session, "from Student s where s.lastName = 'Doe'");
+            printQueryResult(studentList);
 
-            studentList = session.createQuery("from Student s where s.lastName = 'Doe' or s.firstName = 'Daffy'").getResultList();
-            studentList.forEach(student -> {
-                System.out.println(student.toString());
-            });
+            studentList = queryDatabase(session, "from Student s where s.lastName = 'Doe' or s.firstName = 'Daffy'");
+            printQueryResult(studentList);
 
-            studentList = session.createQuery("from Student s where s.email like '%test.com'").getResultList();
-            studentList.forEach(student -> {
-                System.out.println(student.toString());
-            });
+            studentList = queryDatabase(session, "from Student s where s.email like '%test.com'");
+            printQueryResult(studentList);
 
             session.getTransaction().commit();
 
@@ -79,5 +59,29 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static void printQueryResult(List<Student> studentList) {
+        studentList.forEach(student -> {
+            System.out.println(student.toString());
+        });
+    }
+
+    private static void savingEntityExample(Session session, List<Student> entities) {
+        session.beginTransaction();
+        entities.forEach(session::save);
+        session.getTransaction().commit();
+    }
+
+    private static void retrieveEntityById(Session session, Integer id) {
+        session.beginTransaction();
+        Student result = session.get(Student.class, id);
+        session.getTransaction().commit();
+
+        System.out.println(result.toString());
+    }
+
+    private static List queryDatabase(Session session, String from_Student) {
+        return session.createQuery(from_Student).getResultList();
     }
 }
