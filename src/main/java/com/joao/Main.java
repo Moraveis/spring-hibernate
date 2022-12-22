@@ -100,6 +100,8 @@ public class Main {
             int total = queryDatabase(session, "from Student").size();
             System.out.println("Total of records: " + total );
 
+            session.getTransaction().commit();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
