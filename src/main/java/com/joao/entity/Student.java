@@ -79,4 +79,14 @@ public class Student {
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, email);
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
