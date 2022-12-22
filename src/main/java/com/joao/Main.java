@@ -15,10 +15,24 @@ public class Main {
 
         try (factory) {
             Session session = factory.getCurrentSession();
-            Student student = new Student("Paul", "Wall", "paul@test.com");
 
+            Student student1 = new Student("John", "Doe", "john@test.com");
+            Student student2 = new Student("Mary", "Public", "mary@test.com");
+            Student student3 = new Student("Bonita", "Applebum", "bonita@test.com");
+            Student student4 = new Student("Daffy", "Duck", "daffy@test.com");
+
+
+            /**
+             * Saving Objects
+             */
             session.beginTransaction();
-            session.save(student);
+
+            session.save(student1);
+            session.save(student2);
+            session.save(student3);
+            session.save(student4);
+            System.out.println("Id: "+ student4.getId());
+
             session.getTransaction().commit();
 
         } catch (Exception e) {
