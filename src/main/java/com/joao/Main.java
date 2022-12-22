@@ -74,6 +74,32 @@ public class Main {
             session.createQuery("update Student set email = 'scoobydoo@test.com' where id = 1").executeUpdate();
             session.getTransaction().commit();
 
+            /*
+             * Deleting record in a transaction
+             * */
+            session = factory.getCurrentSession();
+            result = retrieveEntityById(session, 2);
+
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+            session.delete(result);
+            session.getTransaction().commit();
+
+            /*
+             * Delete statement
+             * */
+            session = factory.getCurrentSession();
+
+            session.beginTransaction();
+            session.createQuery("delete Student where id = 3").executeUpdate();
+            session.getTransaction().commit();
+
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            int total = queryDatabase(session, "from Student").size();
+            System.out.println("Total of records: " + total );
+
         } catch (Exception e) {
             e.printStackTrace();
         }
