@@ -22,7 +22,7 @@ public class Main {
             Student student4 = new Student("Daffy", "Duck", "daffy@test.com");
 
 
-            /**
+            /*
              * Saving Objects
              */
             session.beginTransaction();
@@ -34,6 +34,17 @@ public class Main {
             System.out.println("Id: "+ student4.getId());
 
             session.getTransaction().commit();
+
+            /*
+             * Reading Objects
+             */
+
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+            Student result = session.get(Student.class, 1);
+            session.getTransaction().commit();
+
+            System.out.println(result.getFirstName());
 
         } catch (Exception e) {
             e.printStackTrace();
