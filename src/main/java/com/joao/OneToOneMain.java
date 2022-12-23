@@ -16,6 +16,9 @@ public class OneToOneMain {
                 .buildSessionFactory();
 
         try (factory) {
+            /*
+            * Create instructor Example
+            * */
             Instructor instructor = new Instructor("Joao", "Vitor", "joao@vitor.me");
             InstructorDetail instructorDetail = new InstructorDetail("udemy course", "coding");
 
@@ -24,6 +27,20 @@ public class OneToOneMain {
             Session session = factory.getCurrentSession();
             session.beginTransaction();
             session.save(instructor);
+            session.getTransaction().commit();
+
+            /*
+            * Deleting an Instructor record
+            * */
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            Instructor result = session.get(Instructor.class, 1);
+            System.out.println("Result = " + result);
+            if (result != null) {
+                session.delete(result);
+                System.out.println("Instructor deleted.");
+            }
             session.getTransaction().commit();
 
         } catch (Exception e) {
