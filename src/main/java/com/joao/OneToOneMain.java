@@ -70,6 +70,7 @@ public class OneToOneMain {
             System.out.println("Result = " + detail);
             System.out.println("instructorDetail > " + detail.getInstructor());
 
+            detail.getInstructor().setInstructorDetail(null);
             session.delete(detail);
 
             session.getTransaction().commit();
