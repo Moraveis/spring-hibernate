@@ -5,21 +5,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.Objects;
 
 @Entity
-@Table
+@Table(name = "instructor_detail")
 public class InstructorDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(length = 128)
+    @Column(name = "youtube_channel")
     private String youTuBeChannel;
 
-    @Column(length = 45)
+    @Column(name = "hobby")
     private String hobby;
 
     public InstructorDetail() {
@@ -61,18 +61,5 @@ public class InstructorDetail {
                 ", youTuBeChannel='" + youTuBeChannel + '\'' +
                 ", hobby='" + hobby + '\'' +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InstructorDetail that = (InstructorDetail) o;
-        return Objects.equals(id, that.id) && Objects.equals(youTuBeChannel, that.youTuBeChannel) && Objects.equals(hobby, that.hobby);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, youTuBeChannel, hobby);
     }
 }
