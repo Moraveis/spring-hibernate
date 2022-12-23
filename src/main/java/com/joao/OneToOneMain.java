@@ -17,21 +17,25 @@ public class OneToOneMain {
 
         try (factory) {
             /*
-            * Create instructor Example
-            * */
-            Instructor instructor = new Instructor("Joao", "Vitor", "joao@vitor.me");
-            InstructorDetail instructorDetail = new InstructorDetail("udemy course", "coding");
+             * Create instructor Example
+             * */
+            Instructor instructor1 = new Instructor("Joao", "Vitor", "joao@vitor.me");
+            InstructorDetail instructorDetail1 = new InstructorDetail("udemy course", "coding");
+            instructor1.setInstructorDetail(instructorDetail1);
 
-            instructor.setInstructorDetail(instructorDetail);
+            Instructor instructor2 = new Instructor("Bruce", "Lee", "bruce@lee.he");
+            InstructorDetail instructorDetail2 = new InstructorDetail("Martial Arts 101", "Meditation");
+            instructor2.setInstructorDetail(instructorDetail2);
 
             Session session = factory.getCurrentSession();
             session.beginTransaction();
-            session.save(instructor);
+            session.save(instructor1);
+            session.save(instructor2);
             session.getTransaction().commit();
 
             /*
-            * Deleting an Instructor record
-            * */
+             * Deleting an Instructor record
+             * */
             session = factory.getCurrentSession();
             session.beginTransaction();
 
@@ -43,6 +47,17 @@ public class OneToOneMain {
             }
             session.getTransaction().commit();
 
+            /*
+             * Bidirectional mapping example
+             * */
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            InstructorDetail detail = session.get(InstructorDetail.class, 2);
+            System.out.println("Result = " + detail);
+            System.out.println("instructorDetail > " + detail.getInstructor());
+
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
