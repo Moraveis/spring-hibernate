@@ -15,7 +15,9 @@ public class OneToOneMain {
                 .addAnnotatedClass(InstructorDetail.class)
                 .buildSessionFactory();
 
-        try (factory) {
+        Session session = factory.getCurrentSession();
+
+        try {
             /*
              * Create instructor Example
              * */
@@ -27,7 +29,6 @@ public class OneToOneMain {
             InstructorDetail instructorDetail2 = new InstructorDetail("Martial Arts 101", "Meditation");
             instructor2.setInstructorDetail(instructorDetail2);
 
-            Session session = factory.getCurrentSession();
             session.beginTransaction();
             session.save(instructor1);
             session.save(instructor2);
@@ -58,8 +59,25 @@ public class OneToOneMain {
             System.out.println("instructorDetail > " + detail.getInstructor());
 
             session.getTransaction().commit();
+
+            /*
+             * Deleting Instruction Detail
+             * */
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            detail = session.get(InstructorDetail.class, 2);
+            System.out.println("Result = " + detail);
+            System.out.println("instructorDetail > " + detail.getInstructor());
+
+            session.delete(detail);
+
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            session.close();
+            factory.close();
         }
 
     }
