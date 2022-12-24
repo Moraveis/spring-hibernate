@@ -1,4 +1,4 @@
-package com.joao.oneToOne;
+package com.joao.onetoone;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;

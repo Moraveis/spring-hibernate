@@ -1,4 +1,6 @@
-package com.joao.oneToOne;
+package com.joao.onetoone;
+
+import com.joao.onetomany.Course;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -7,8 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "instructor")
@@ -30,6 +35,9 @@ public class Instructor {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "instructor_detail_id")
     private InstructorDetail instructorDetail;
+
+    @OneToMany(mappedBy = "instructor", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Course> courses;
 
     public Instructor() {
     }
@@ -80,6 +88,23 @@ public class Instructor {
         this.instructorDetail = instructorDetail;
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public Boolean addCourse(Course otherCourse) {
+        if (this.courses == null) {
+            this.courses = new ArrayList<>();
+        }
+
+        otherCourse.setInstructor(this);
+        return this.courses.add(otherCourse);
+    }
+
     @Override
     public String toString() {
         return "Instructor{" +
@@ -87,6 +112,8 @@ public class Instructor {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", instructorDetail=" + instructorDetail +
+                ", courses=" + courses +
                 '}';
     }
 }

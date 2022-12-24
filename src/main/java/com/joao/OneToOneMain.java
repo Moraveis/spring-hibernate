@@ -1,7 +1,8 @@
 package com.joao;
 
-import com.joao.oneToOne.Instructor;
-import com.joao.oneToOne.InstructorDetail;
+import com.joao.onetomany.Course;
+import com.joao.onetoone.Instructor;
+import com.joao.onetoone.InstructorDetail;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -13,6 +14,7 @@ public class OneToOneMain {
                 .configure("hibernate.cfg.xml")
                 .addAnnotatedClass(Instructor.class)
                 .addAnnotatedClass(InstructorDetail.class)
+                .addAnnotatedClass(Course.class)
                 .buildSessionFactory();
 
         Session session = factory.getCurrentSession();
