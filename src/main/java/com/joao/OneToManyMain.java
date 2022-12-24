@@ -44,9 +44,23 @@ public class OneToManyMain {
             Instructor result = session.get(Instructor.class, 1);
             System.out.println("Result = " + result);
             System.out.println("Course = " + result.getCourses());
-
-
             session.getTransaction().commit();
+
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            Course toDelete = session.get(Course.class, 2);
+            session.delete(toDelete);
+            session.getTransaction().commit();
+
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            result = session.get(Instructor.class, 1);
+            System.out.println("Result = " + result);
+            System.out.println("Course = " + result.getCourses());
+            session.getTransaction().commit();
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
