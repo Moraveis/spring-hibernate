@@ -1,6 +1,7 @@
 package com.joao.onetoone;
 
 import com.joao.onetomany.Course;
+import com.joao.onetomany.Review;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
