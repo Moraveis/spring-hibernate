@@ -23,6 +23,8 @@ public class ManyToManyMain {
         Session session = factory.getCurrentSession();
 
         try (factory) {
+
+            // SAVING EXAMPLE
             session.beginTransaction();
 
             Course course = new Course("Spring hibernate");
@@ -38,6 +40,45 @@ public class ManyToManyMain {
             session.save(student2);
 
             session.getTransaction().commit();
+
+            // FETCH EXAMPLE + SAVING OTHER ENTITIES
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+            Student result = session.get(Student.class, 2);
+            System.out.println("Student: " + result);
+            System.out.println("Student's courses " + result.getCourses());
+
+            Course course2 = new Course("Maths for programming");
+            Course course3 = new Course("Programming logic");
+
+            course2.addStudent(result);
+            course3.addStudent(result);
+
+            session.save(course2);
+            session.save(course3);
+
+            session.getTransaction().commit();
+
+            // VERIFICATION OF INSERTS
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            result = session.get(Student.class, 2);
+            System.out.println("Result: " + result.getCourses());
+
+            session.getTransaction().commit();
+
+            // DELETING EXAMPLE
+            session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            Course toDelete = session.get(Course.class, 1);
+            session.delete(toDelete);
+            session.getTransaction().commit();
+
+            System.out.println("Student 1: " + student1);
+            System.out.println("Student 1's course: " + student1.getCourses());
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
